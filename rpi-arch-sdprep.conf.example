@@ -1,0 +1,17 @@
+#!/bin/bash
+
+block_device_name='sdX'
+block_device_part_1='1'
+block_device_part_2='2'
+
+mirror_url="http://os.archlinuxarm.org/os"
+
+file_image_dir='/var/lib/rpi-arch-sdprep'
+#file_image="ArchLinuxARM-rpi-latest.tar.gz"
+file_image_name="ArchLinuxARM-rpi-2-latest.tar.gz"
+
+host_name='rpi'
+default_user_name="ansible"
+default_user_comment="Ansible automation user (local)"
+default_user_uid="512"
+default_user_authorized_key=""
