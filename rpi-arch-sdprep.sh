@@ -9,7 +9,6 @@ while [[ $# -gt 0 ]]; do
         -d|--block-device) block_device_name="${2}"; shift ;;
         -p1|--part-1) block_device_part_1="${2}"; shift ;;
         -p2|--part-2) block_device_part_2="${2}"; shift ;;
-        -h|--host-name) host_name="${2}"; shift ;;
     esac
 done
 
@@ -60,9 +59,12 @@ bsdtar -xpf "${file_image_dir}/${file_image_name}" -C root && sync
 mv root/boot/* boot
 
 # Copy the post install scripts to SD card
+cd -
 cp rpi-arch-sdprep-postinstall.sh ${temp_dir}/root/root/
 cp rpi-arch-sdprep.conf ${temp_dir}/root/root/
+echo 'PermitRootLogin yes' >> ${temp_dir}/root/etc/ssh/sshd_config
+cat ./nsswitch.conf > ${temp_dir}/root/etc/nsswitch.conf
 
 # Exit
-umount boot root
+umount "${temp_dir}/boot" "${temp_dir}/root"
 exit 0
