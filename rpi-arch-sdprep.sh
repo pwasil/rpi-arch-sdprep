@@ -18,6 +18,14 @@ if [[ "$(whoami)" != "root" ]]; then
     exit 1
 fi
 
+if [[ "$(cat /sys/class/block/${block_device_name}/removable)" != "1" ]]; then
+    echo "[warn] /dev/${block_device_name} is not a removable device!"
+    echo "[warn] This script will erase all data on ${block_device_name}"
+    echo "[warn] Make sure that you know what you are doing!"
+    echo "[warn] Do you want to continue? Press enter or Ctrl+C to abort"
+    read
+fi
+
 if [[ ! -b "/dev/${block_device_name}" ]]; then
     echo "[err] missing or incorrect device name"
     exit 1
@@ -63,7 +71,7 @@ cd -
 cp rpi-arch-sdprep-postinstall.sh ${temp_dir}/root/root/
 cp rpi-arch-sdprep.conf ${temp_dir}/root/root/
 echo 'PermitRootLogin yes' >> ${temp_dir}/root/etc/ssh/sshd_config
-cat ./nsswitch.conf > ${temp_dir}/root/etc/nsswitch.conf
+cat nsswitch.conf > ${temp_dir}/root/etc/nsswitch.conf
 
 # Exit
 umount "${temp_dir}/boot" "${temp_dir}/root"
